@@ -1,0 +1,11 @@
+{
+    "python.linting.enabled": true,
+    "python.jediEnabled": false,
+
+    // Loaded Stubs:  WiPy-pycom-1.18.2 
+    "python.autoComplete.extraPaths": [".micropy/BradenM-micropy-stubs-d8141f6/frozen", ".micropy/BradenM-micropy-stubs-d68cc0f/frozen", ".micropy/BradenM-micropy-stubs-d8141f6/stubs", ".micropy/pycomProject"],
+    "python.autoComplete.typeshedPaths":  [".micropy/BradenM-micropy-stubs-d8141f6/frozen", ".micropy/BradenM-micropy-stubs-d68cc0f/frozen", ".micropy/BradenM-micropy-stubs-d8141f6/stubs", ".micropy/pycomProject"],
+    "python.analysis.typeshedPaths":  [".micropy/BradenM-micropy-stubs-d8141f6/frozen", ".micropy/BradenM-micropy-stubs-d68cc0f/frozen", ".micropy/BradenM-micropy-stubs-d8141f6/stubs", ".micropy/pycomProject"],
+
+    "python.linting.pylintEnabled": true
+}

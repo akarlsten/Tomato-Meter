@@ -8,6 +8,7 @@ In this assignment you will create a small IoT-project where a "thing" will be c
 ## Requirements
 
 ### For Passing grade
+
 * The "thing" should have a simple UI where it is possible to try it´s functionality. 
 * The "thing" should at least have "properties" or "actions" or "events" or any combination of the three. 
 
