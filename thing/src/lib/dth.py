@@ -1,5 +1,6 @@
+import pycom
 import time
-from machine import enable_irq, disable_irq,  Pin
+from machine import enable_irq, disable_irq, Pin, ADC
 
 
 class DTHResult:
@@ -25,7 +26,7 @@ class DTHResult:
 class DTH:
     'DHT sensor (dht11, dht21,dht22) reader class for Pycom'
 
-    #__pin = Pin('P3', mode=Pin.OPEN_DRAIN)
+    # __pin = Pin('P3', mode=Pin.OPEN_DRAIN)
     __dhttype = 0
 
     def __init__(self, pin, sensor=0):
@@ -38,7 +39,7 @@ class DTH:
         # time.sleep(1)
 
         # send initial high
-        #self.__send_and_sleep(1, 0.025)
+        # self.__send_and_sleep(1, 0.025)
 
         # pull down to low
         self.__send_and_sleep(0, 0.019)
@@ -68,11 +69,11 @@ class DTH:
         # ok, we have valid data, return it
         [int_rh, dec_rh, int_t, dec_t, csum] = the_bytes
         if self.__dhttype == 0:  # dht11
-        rh = int_rh  # dht11 20% ~ 90%
-        t = int_t  # dht11 0..50°C
-        else:  # dht21,dht22
-        rh = ((int_rh * 256) + dec_rh)/10
-        t = (((int_t & 0x7F) * 256) + dec_t)/10
+            rh = int_rh  # dht11 20% ~ 90%
+            t = int_t  # dht11 0..50°C
+        else:
+            rh = ((int_rh * 256) + dec_rh)/10
+            t = (((int_t & 0x7F) * 256) + dec_t)/10
         if (int_t & 0x80) > 0:
             t *= -1
         return DTHResult(DTHResult.ERR_NO_ERROR, t, rh)

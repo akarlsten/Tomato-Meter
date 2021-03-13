@@ -7,5 +7,6 @@
     "python.autoComplete.typeshedPaths":  [".micropy/BradenM-micropy-stubs-d8141f6/frozen", ".micropy/BradenM-micropy-stubs-d68cc0f/frozen", ".micropy/BradenM-micropy-stubs-d8141f6/stubs", ".micropy/pycomProject"],
     "python.analysis.typeshedPaths":  [".micropy/BradenM-micropy-stubs-d8141f6/frozen", ".micropy/BradenM-micropy-stubs-d68cc0f/frozen", ".micropy/BradenM-micropy-stubs-d8141f6/stubs", ".micropy/pycomProject"],
 
-    "python.linting.pylintEnabled": true
+    "python.linting.pylintEnabled": true,
+    "python.languageServer": "Microsoft"
 }
