@@ -55,9 +55,9 @@ def _bytes_to_int(data):
 class SMBusEmulator:
     __slots__ = ('i2c',)
 
-    def __init__(self, scl_pinno=5, sda_pinno=4):
-        self.i2c = I2C(scl=Pin(scl_pinno, Pin.IN),
-                       sda=Pin(sda_pinno, Pin.IN))
+    def __init__(self):
+        self.i2c = I2C(0, I2C.MASTER, baudrate=100000, pins=(
+            'P9', 'P10'))
 
     def write_byte_data(self, addr, cmd, val):
         buf = bytes([cmd, val])
@@ -77,7 +77,7 @@ SENSOR_ADDRESS = 0x29
 class Tsl2591:
     def __init__(
         self,
-        sensor_id,
+        sensor_id=1,
         integration=INTEGRATIONTIME_100MS,
         gain=GAIN_LOW
     ):
