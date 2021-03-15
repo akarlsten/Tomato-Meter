@@ -3,6 +3,8 @@ import machine
 import pycom
 import time
 
+import secrets
+
 pycom.heartbeat(False)
 
 wlan = WLAN()
@@ -13,9 +15,10 @@ wlan.init(mode=WLAN.STA)
 nets = wlan.scan()
 
 for net in nets:
-    if net.ssid == 'Adam & Emma':
+    if net.ssid == secrets.secrets["ssid"]:
         print('Network found!')
-        wlan.connect(net.ssid, auth=(WLAN.WPA2, 'Diskmaskin1'), timeout=5000)
+        wlan.connect(net.ssid, auth=(
+            WLAN.WPA2, secrets.secrets["key"]), timeout=5000)
         while not wlan.isconnected():
             machine.idle()  # save power while waiting
         print('WLAN connection succeeded!')

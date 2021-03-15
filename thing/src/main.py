@@ -6,6 +6,8 @@ import time
 import ujson
 import urequests
 
+import secrets
+
 pycom.heartbeat(False)
 
 adc = ADC(bits=12)
@@ -47,6 +49,16 @@ while True:
 
             jsonString = ujson.dumps(results)
             print(jsonString)
+            request_url = secrets.secrets["url"]
+            request_token = 'Bearer %s' % secrets.secrets["token"]
+
+            try:
+                res = urequests.post(request_url, headers={
+                    'content-type': 'application/json', 'Authorization': request_token}, data=jsonString)
+                print(res)
+                res.close()
+            except OSError as e:
+                print('Error making POST request: %s' % str(e))
 
             pycom.rgbled(0x000000)
         else:
