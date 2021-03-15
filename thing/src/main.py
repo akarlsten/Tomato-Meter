@@ -1,4 +1,4 @@
-import tsl2591
+from tsl2591 import Tsl2591
 from machine import ADC, Pin
 from dth import DTH
 import pycom
@@ -15,7 +15,7 @@ adc = ADC(bits=12)
 INTEGRATIONTIME_200MS = 0x01
 GAIN_MED = 0x10
 
-light_sensor = tsl2591.Tsl2591(1, INTEGRATIONTIME_200MS, GAIN_MED)
+light_sensor = Tsl2591(1, INTEGRATIONTIME_200MS, GAIN_MED)
 soil_moisture_sensor = adc.channel(pin='P20', attn=ADC.ATTN_11DB)
 temp_and_humidity_sensor = DTH(Pin('P22', mode=Pin.OPEN_DRAIN), 0)
 
