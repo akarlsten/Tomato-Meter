@@ -1,4 +1,3 @@
-
 const authenticate = (req, res, next) => {
   try {
     const token = req.header('Authorization')

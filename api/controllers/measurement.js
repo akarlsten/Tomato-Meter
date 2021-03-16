@@ -1,5 +1,4 @@
-import mongoose from 'mongoose'
-import 'date-fns/sub'
+import sub from 'date-fns/sub/index.js'
 
 import Measurement from '../models/measurement.js'
 

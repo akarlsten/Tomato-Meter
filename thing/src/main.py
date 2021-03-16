@@ -1,5 +1,6 @@
 from tsl2591 import Tsl2591
-from machine import ADC, Pin
+from machine import ADC, Pin, WDT
+from network import WLAN
 from dth import DTH
 import pycom
 import time
@@ -10,12 +11,19 @@ import secrets
 
 pycom.heartbeat(False)
 
+# If we fail to successfully POST results twice in a row we will reset the machine
+wdt = WDT(timeout=3630000)
+
 adc = ADC(bits=12)
 
+time.timezone(3600)  # CET
+
+INTEGRATIONTIME_100MS = 0x00
 INTEGRATIONTIME_200MS = 0x01
+GAIN_LOW = 0x00
 GAIN_MED = 0x10
 
-light_sensor = Tsl2591(1, INTEGRATIONTIME_200MS, GAIN_MED)
+light_sensor = Tsl2591(1, INTEGRATIONTIME_100MS, GAIN_LOW)
 soil_moisture_sensor = adc.channel(pin='P20', attn=ADC.ATTN_11DB)
 temp_and_humidity_sensor = DTH(Pin('P22', mode=Pin.OPEN_DRAIN), 0)
 
@@ -25,12 +33,22 @@ while True:
     while not resultValid:
         pycom.rgbled(0x101000)  # yellow
 
+        # increase the gain and exposure of light sensor at night
+        currentHour = time.localtime()[3]
+        if currentHour >= 6 and currentHour <= 18:
+            light_sensor.set_timing(INTEGRATIONTIME_100MS)
+            light_sensor.set_gain(GAIN_LOW)
+        else:
+            light_sensor.set_timing(INTEGRATIONTIME_200MS)
+            light_sensor.set_gain(GAIN_MED)
+        time.sleep(2)
+
         soil_moisture = soil_moisture_sensor()
         time.sleep(2)
 
         full, ir = light_sensor.get_full_luminosity()
         lux = light_sensor.calculate_lux(full, ir)
-        time.sleep(1)
+        time.sleep(2)
 
         result = temp_and_humidity_sensor.read()
         time.sleep(3)
@@ -52,17 +70,25 @@ while True:
             request_url = secrets.secrets["url"]
             request_token = 'Bearer %s' % secrets.secrets["token"]
 
-            try:
-                res = urequests.post(request_url, headers={
-                    'content-type': 'application/json', 'Authorization': request_token}, data=jsonString)
-                print(res)
-                res.close()
-            except OSError as e:
-                print('Error making POST request: %s' % str(e))
+            # retry POST request 5 times
+            i = 0
+            while i < 5:
+                try:
+                    res = urequests.post("http://70291aba9ece.ngrok.io", headers={
+                        'content-type': 'application/json', 'Authorization': request_token}, data=jsonString)
+                    print('Measurement POSTed successfully!')
+                    res.close()
+                    wdt.feed()  # reset the watchdog timer
+                    i = 5
+                except OSError as e:
+                    i += 1
+                    print('Error making POST request: %s' % str(e))
+                    print('Retrying in 5 seconds.. Attempt: %s/5' % i + 1)
+                    time.sleep(5)
 
             pycom.rgbled(0x000000)
         else:
             print("Result invalid!")
             pycom.rgbled(0xFF0000)
 
-    time.sleep(2)  # 30 minutes
+    time.sleep(1800)  # 30 minutes

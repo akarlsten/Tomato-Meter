@@ -18,7 +18,7 @@ connectToDB().catch(error => {
 })
 
 app.get('/', measurementController.index)
-app.post('/', measurementController.add)
+app.post('/', authenticate, measurementController.add)
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}!`)

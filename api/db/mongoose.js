@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const uri = process.env.MONGODB_URI
+const uri = process.env.MONGODB_ATLAS
 
 // Adapted from Mats Loock
 const connectToDB = async () => {

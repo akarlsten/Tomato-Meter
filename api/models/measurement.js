@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const Measurement = mongoose.model('Measurement', {
   timestamp: {
-    type: Date
+    type: Number
   },
   lux: {
     type: Number
