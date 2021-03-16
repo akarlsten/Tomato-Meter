@@ -1,4 +1,5 @@
 import sub from 'date-fns/sub/index.js'
+import getUnixTime from 'date-fns/getUnixTime/index.js'
 
 import Measurement from '../models/measurement.js'
 
@@ -7,7 +8,7 @@ const measurementController = {}
 measurementController.index = async (req, res) => {
   try {
     const now = Date.now()
-    let start = sub(now, { weeks: 1})
+    let start = getUnixTime(sub(now, { weeks: 1 }))
 
     if (req.query.start) {
       start = req.query.start
@@ -16,9 +17,10 @@ measurementController.index = async (req, res) => {
     const measurements = await Measurement.find({
       timestamp: {
         $gte: start
-      }})
+      }
+    }).sort({ timestamp: 'asc' })
 
-      res.json(measurements)
+    res.json(measurements)
   } catch (e) {
     res.status(400).send(e.errors)
   }
@@ -26,7 +28,7 @@ measurementController.index = async (req, res) => {
 
 measurementController.add = async (req, res) => {
   try {
-    const measurement = new Measurement({...req.body})
+    const measurement = new Measurement({ ...req.body })
     const saved = await measurement.save()
 
     res.json(saved)

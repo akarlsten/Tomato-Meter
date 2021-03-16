@@ -74,7 +74,7 @@ while True:
             i = 0
             while i < 5:
                 try:
-                    res = urequests.post("http://70291aba9ece.ngrok.io", headers={
+                    res = urequests.post(request_url, headers={
                         'content-type': 'application/json', 'Authorization': request_token}, data=jsonString)
                     print('Measurement POSTed successfully!')
                     res.close()
