@@ -1,65 +1,57 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+import Header from 'components/Header'
+import ChartContainer from 'components/ChartContainer'
+
+export default function Home({measurements}) {
   return (
-    <div className={styles.container}>
+    <div className="container mx-auto bg-red-100 rounded-xl h-full text-gray-700">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      <main className="flex flex-col justify-center items-center p-14">
+        <Header />
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className="mt-6 text-center max-w-md">
+          <p className="text-xl font-bold mb-2">
+            How is my tomato plant doing? 🍅
+          </p>
+          <p className="text-sm">
+            This website will allow you to check up on one of the cherry tomato plants in my windowsill.
+            We keep track of the air temperature, humidity, soil moisture and light levels with a LoPy4 microcontroller and upload it to our database.
+          </p>
         </div>
+        <ChartContainer measurements={measurements} />
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
+      <footer className="flex items-center align-middle justify-center pb-4">
+        <div className="flex items-center text-center bg-red-300 p-2 rounded-lg">
+          <span className="font-semibold text-sm text-gray-800">
+            <p>made with 🍅</p> by <a className="hover:text-red-400" rel="noopener noreferrer" target="_blank" href="https://adamkarlsten.com">Adam Karlsten</a> (ak222ye)
+          </span>
+        </div>
+
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const res = await fetch('https://tomato-meter.herokuapp.com')
+  const measurements = await res.json()
+
+  if (res.status !== 200) {
+    console.error(json)
+    throw new Error('Failed to fetch API')
+  }
+
+  return {
+    props: {
+      measurements
+    },
+    revalidate: 1
+  }
 }

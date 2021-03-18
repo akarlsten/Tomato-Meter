@@ -11,8 +11,8 @@ import secrets
 
 pycom.heartbeat(False)
 
-# If we fail to successfully POST results twice in a row we will reset the machine
-wdt = WDT(timeout=3630000)
+# If we fail to successfully POST results within a 32 minute window (allowing for retries) we will reset the device
+wdt = WDT(timeout=1920000)
 
 adc = ADC(bits=12)
 
@@ -88,7 +88,8 @@ while True:
 
             pycom.rgbled(0x000000)
         else:
-            print("Result invalid!")
+            print("Sensor results invalid! Retrying in 5 seconds..")
             pycom.rgbled(0xFF0000)
+            time.sleep(5)
 
     time.sleep(1800)  # 30 minutes
