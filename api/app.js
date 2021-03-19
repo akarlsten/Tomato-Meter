@@ -18,6 +18,12 @@ connectToDB().catch(error => {
 })
 
 app.get('/', measurementController.index)
+app.get('/status', measurementController.latest)
+app.get('/temperature', measurementController.temperature)
+app.get('/humidity', measurementController.humidity)
+app.get('/soil', measurementController.soilMoisture)
+app.get('/light', measurementController.lightLevel)
+app.get('/thing', measurementController.thing)
 app.post('/', authenticate, measurementController.add)
 
 app.listen(port, () => {
