@@ -1,15 +1,16 @@
 import Head from 'next/head'
 import useSWR from 'swr'
 
-import {useEffect} from 'react'
-
 import ChartContainer from 'components/ChartContainer'
 
+const uri = 'https://tomato-meter.herokuapp.com'
+
 export default function Home({ measurements }) {
-  const { data, error } = useSWR('https://tomato-meter.herokuapp.com', (...args) => fetch(...args).then(res => res.json()), {initialData: measurements})
-  useEffect(() => {
-    console.log(data)
-  }, [data])
+  const { data, error } = useSWR(uri,
+    (...args) => fetch(...args).then(res => res.json()), 
+    { initialData: measurements, refreshInterval: 900000, revalidateOnMount: true }
+  )
+  
   return (
     <div className="container mx-auto max-w-7xl bg-red-100 shadow-2xl rounded-xl h-full text-gray-800">
       <Head>
@@ -44,7 +45,8 @@ export default function Home({ measurements }) {
             </p>
           </div>
         </div>
-        <ChartContainer measurements={measurements} />
+        {error && !data && <div className="font-bold text-2xl mt-6">Can't reach the API! ☠️</div>}
+        {data && <ChartContainer measurements={data} />}
       </main>
 
       <footer className="flex items-center align-middle justify-center pb-6">
@@ -60,7 +62,7 @@ export default function Home({ measurements }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch('https://tomato-meter.herokuapp.com')
+  const res = await fetch(uri)
   const measurements = await res.json()
 
   if (res.status !== 200) {
