@@ -1,4 +1,5 @@
 import { ResponsiveLine } from '@nivo/line'
+import {linearGradientDef} from '@nivo/core'
 import format from 'date-fns/format'
 
 const CustomEmojiTick = ({tick, direction}) => {
@@ -68,11 +69,10 @@ const CustomSlice = ({slice}) => {
 }
 
 const LightChart = ({data}) => {
-  console.log(data)
 
   return (
-    <div className="rounded-lg bg-white p-3 h-64 w-64 md:h-96 md:w-96 lg:h-120 lg:w-132">
-      <p className="font-bold text-center -mb-3">Sunlight (Lux)</p>
+    <div className="rounded-lg bg-white pb-4 h-64 w-64 md:h-96 md:w-96 lg:h-120 lg:w-132">
+      <p className="font-bold text-2xl text-center -mb-10 mt-2">Sunlight (Lux)</p>
       <ResponsiveLine
         data={data}
         curve="basis"
@@ -92,16 +92,26 @@ const LightChart = ({data}) => {
           tickValues: "every 6 hours",
           tickSize: 2,
           tickPadding: 5,
-          tickRotation: 15,
-          format: "%a %b %d %H:%M",
+          tickRotation: 25,
+          format: "%a %dth %H:%M",
         }}
         yScale={{ type: 'symlog', constant: 10000, max: "100000", stacked: false, reverse: false }}
         lineWidth="2"
         gridYValues={[0, 3000, 5000, 10000, 100000]}
-        enableArea={true}
         enableSlices="x"
         enablePoints={false}
-        colors={['#FBBF24']}
+        enableArea={true}
+        areaOpacity={1}
+        theme={{ fontFamily: 'Inconsolata', fontSize: 13, fontWeight: 'bold', grid: { line: { stroke: '#FECACA'}}}}
+        colors={['#FCD34D']}
+        defs={[
+          linearGradientDef('gradientA', [
+            { offset: 0, color: 'inherit' },
+             {offset: 50, color: 'inherit', opacity: 100 },
+            { offset: 100, color: 'inherit', opacity: 0 },
+          ]),
+        ]}
+        fill={[{ match: '*', id: 'gradientA' }]}
         sliceTooltip={CustomSlice}
       />
     </div>
