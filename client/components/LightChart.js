@@ -1,5 +1,5 @@
 import { ResponsiveLine } from '@nivo/line'
-import {linearGradientDef} from '@nivo/core'
+import { linearGradientDef } from '@nivo/core'
 import format from 'date-fns/format'
 
 const CustomEmojiTick = ({tick, direction}) => {
@@ -18,7 +18,7 @@ const CustomEmojiTick = ({tick, direction}) => {
     case 10000:
       emoji = '🌤️'
       break
-    case 100000:
+    case 65000:
       emoji = '🌞'
       break
   }
@@ -68,36 +68,38 @@ const CustomSlice = ({slice}) => {
   )
 }
 
-const LightChart = ({data}) => {
+const LightChart = ({ data, timeSpan}) => {
+
+  const tickValues = timeSpan === '7d' ? 'every 24 hours' : timeSpan === '24h' ? 'every 3 hours' : 'every 1 hour'
+  const formatting = timeSpan === '7d' ? "%a %dth" : timeSpan === '24h' ? "%a %dth %H:%M" : "%H:%M"
 
   return (
-    <div className="rounded-lg bg-white pb-4 h-64 w-64 md:h-96 md:w-96 lg:h-120 lg:w-132">
-      <p className="font-bold text-2xl text-center -mb-10 mt-2">Sunlight (Lux)</p>
+    <div className="rounded-lg shadow-inner bg-white pb-4 h-64 w-64 sm:w-72 sm:h-72 md:h-96 md:w-96 xl:h-120 xl:w-132">
+      <p className="font-bold text-2xl text-center -mb-10 mt-2 underline">Sunlight (Lux)</p>
       <ResponsiveLine
         data={data}
         curve="basis"
-        margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
         xScale={{ type: 'time', format: "%Y-%m-%dT%H:%M:%S%Z", useUTC: false}}
         xFormat="time:%Y-%m-%dT%H:%M:%S%Z"
         axisLeft={{
-          tickValues: [0, 3000, 5000, 10000, 100000],
-          tickSize: 10,
+          tickValues: [0, 3000, 5000, 10000, 65000],
           renderTick: LeftTick
         }}
         axisRight={{
-          tickValues: [0, 3000, 5000, 10000, 100000],
+          tickValues: [0, 3000, 5000, 10000, 65000],
           renderTick: RightTick,
         }}
         axisBottom={{
-          tickValues: "every 6 hours",
+          tickValues: tickValues,
           tickSize: 2,
           tickPadding: 5,
           tickRotation: 25,
-          format: "%a %dth %H:%M",
+          format: formatting,
         }}
-        yScale={{ type: 'symlog', constant: 10000, max: "100000", stacked: false, reverse: false }}
+        yScale={{ type: 'symlog', constant: 10000, min: "0", max: "100000", stacked: false, reverse: false }}
         lineWidth="2"
-        gridYValues={[0, 3000, 5000, 10000, 100000]}
+        gridYValues={[0, 3000, 5000, 10000, 65000]}
         enableSlices="x"
         enablePoints={false}
         enableArea={true}

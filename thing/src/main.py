@@ -83,7 +83,7 @@ while True:
                 except OSError as e:
                     i += 1
                     print('Error making POST request: %s' % str(e))
-                    print('Retrying in 5 seconds.. Attempt: %s/5' % i + 1)
+                    print('Retrying in 5 seconds.. Attempt: %s/5' % str(i + 1))
                     time.sleep(5)
 
             pycom.rgbled(0x000000)

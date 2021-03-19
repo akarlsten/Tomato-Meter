@@ -5,6 +5,9 @@ import formatISO from 'date-fns/formatISO'
 
 import TimeSelector from 'components/TimeSelector'
 import LightChart from 'components/LightChart'
+import SoilChart from 'components/SoilChart'
+import TempChart from 'components/TempChart'
+import HumidChart from 'components/HumidChart'
 
 const ChartContainer = ({measurements}) => {
   const [timeSpan, setTimeSpan] = useState('7d')
@@ -49,29 +52,35 @@ const ChartContainer = ({measurements}) => {
     }]
   ), [formatted]) 
 
-  const humid = [{
-    id: 'humidity',
-    data: formatted.map(({ timestamp, humidity }) => ({ x: timestamp, y: humidity }))
-  }]
+  const humid = useMemo(() => (
+    [{
+      id: 'humidity',
+      data: formatted.map(({ timestamp, humidity }) => ({ x: timestamp, y: humidity }))
+    }]
+  ), [formatted]) 
 
-  const temp = [{
-    id: 'temperature',
-    data: formatted.map(({ timestamp, temperature }) => ({ x: timestamp, y: temperature }))
-  }]
+  const temp = useMemo(() => (
+    [{
+      id: 'temperature',
+      data: formatted.map(({ timestamp, temperature }) => ({ x: timestamp, y: temperature }))
+    }]
+  ), [formatted]) 
 
-  const soil = [{
-    id: 'soil',
-    data: formatted.map(({ timestamp, soilMoisture }) => ({ x: timestamp, y: soilMoisture }))
-  }]
+  const soil = useMemo(() => (
+    [{
+      id: 'soil',
+      data: formatted.map(({ timestamp, soilMoisture }) => ({ x: timestamp, y: soilMoisture }))
+    }]
+  ), [formatted])
 
   return (
     <>
     <TimeSelector timeSpan={timeSpan} setTimeSpan={setTimeSpan} />
-    <div className="grid gap-4 lg:gap-8 place-items-center items-center content-center justify-center min-h-full mt-4 grid-cols-1 lg:grid-cols-2">
-      <LightChart data={light} />
-      <LightChart data={light} />
-      <LightChart data={light} />
-      <LightChart data={light} />
+    <div className="grid gap-4 md:gap-6 lg:gap-8 place-items-center items-center content-center justify-center min-h-full mt-4 grid-cols-1 md:grid-cols-2">
+      <LightChart data={light} timeSpan={timeSpan}/>
+      <SoilChart data={soil} timeSpan={timeSpan}/>
+      <TempChart data={temp} timeSpan={timeSpan}/>
+      <HumidChart data={humid} timeSpan={timeSpan}/>
     </div>
     </>
   )
