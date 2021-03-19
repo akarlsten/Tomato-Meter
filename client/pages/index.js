@@ -1,9 +1,15 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import useSWR from 'swr'
+
+import {useEffect} from 'react'
 
 import ChartContainer from 'components/ChartContainer'
 
-export default function Home({measurements}) {
+export default function Home({ measurements }) {
+  const { data, error } = useSWR('https://tomato-meter.herokuapp.com', (...args) => fetch(...args).then(res => res.json()), {initialData: measurements})
+  useEffect(() => {
+    console.log(data)
+  }, [data])
   return (
     <div className="container mx-auto max-w-7xl bg-red-100 shadow-2xl rounded-xl h-full text-gray-800">
       <Head>
@@ -66,6 +72,6 @@ export async function getStaticProps() {
     props: {
       measurements
     },
-    revalidate: 1
+    revalidate: 600
   }
 }
