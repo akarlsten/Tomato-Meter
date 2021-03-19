@@ -39,7 +39,7 @@ measurementController.add = async (req, res) => {
 
 measurementController.latest = async (req, res) => {
   try {
-    const measurement = await Measurement.find({}).sort({ _id: -1 }).limit(1)
+    const measurement = await Measurement.findOne({}).sort({ _id: -1 })
 
     res.json(measurement)
   } catch (e) {
@@ -49,7 +49,7 @@ measurementController.latest = async (req, res) => {
 
 measurementController.temperature = async (req, res) => {
   try {
-    const { timestamp, temperature } = await Measurement.find({}).sort({ _id: -1 }).limit(1)
+    const { timestamp, temperature } = await Measurement.findOne({}).sort({ _id: -1 })
 
     res.json({ timestamp, temperature })
   } catch (e) {
@@ -59,7 +59,7 @@ measurementController.temperature = async (req, res) => {
 
 measurementController.humidity = async (req, res) => {
   try {
-    const { timestamp, humidity } = await Measurement.find({}).sort({ _id: -1 }).limit(1)
+    const { timestamp, humidity } = await Measurement.findOne({}).sort({ _id: -1 })
 
     res.json({ timestamp, humidity })
   } catch (e) {
@@ -69,7 +69,7 @@ measurementController.humidity = async (req, res) => {
 
 measurementController.soilMoisture = async (req, res) => {
   try {
-    const { timestamp, soilMoisture } = await Measurement.find({}).sort({ _id: -1 }).limit(1)
+    const { timestamp, soilMoisture } = await Measurement.findOne({}).sort({ _id: -1 })
 
     res.json({ timestamp, soilMoisture })
   } catch (e) {
@@ -79,7 +79,7 @@ measurementController.soilMoisture = async (req, res) => {
 
 measurementController.lightLevel = async (req, res) => {
   try {
-    const { timestamp, lux } = await Measurement.find({}).sort({ _id: -1 }).limit(1)
+    const { timestamp, lux } = await Measurement.findOne({}).sort({ _id: -1 })
 
     res.json({ timestamp, lux })
   } catch (e) {
