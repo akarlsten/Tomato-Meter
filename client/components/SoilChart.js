@@ -86,7 +86,7 @@ const SoilChart = ({ data, timeSpan }) => {
   const formatting = timeSpan === '7d' ? "%a %dth" : timeSpan === '24h' ? "%a %dth %H:%M" : "%H:%M"
 
   return (
-    <div className="rounded-lg shadow-inner bg-white pb-4 h-64 w-64 sm:w-72 sm:h-72 md:h-96 md:w-96 xl:h-120 xl:w-132">
+    <div className="rounded-lg shadow-inner bg-white pb-4 h-96 w-80 sm:w-96 sm:h-96 md:h-96 md:w-86 lg:w-108 lg:h-108 xl:h-120 xl:w-132">
       <p className="font-bold text-2xl text-center -mb-10 mt-2 underline">Soil Moisture</p>
       <ResponsiveLine
         data={data}
