@@ -35,14 +35,6 @@ The client is a Next.js React application using the Nivo library for graphing. N
 - [Thing description endpoint](https://tomato-meter.herokuapp.com/thing)
 - [Youtube Recording](https://youtu.be/v0gZ23Ho6Tc)
 
-If possible we want a public url to visit to check the IoT-thing.
-
-You need to provide a recording of your thing and how it works. Talk about:
-
-- The thing, hardware
-- Connectivity, how is the thing connected?
-- Integration and UI
-
 ### Group/individual reflection
 
 _Your thoughts on the assignment. What was hard, what have you learned? What could you have done differently?_
@@ -61,8 +53,3 @@ Finally, I would have liked to expand the system with either automatic alerts wh
 
 _Motivate why your application should be granted a higher grade. Descibe things like how you implement W3C WoT Thing Description Specification._
 I think my presentation in terms of the UI is very nice, it's very easy to at a glance see what's up with the tomato. The Thing Description is also accurate and conforms to the specification as far as possible - I imagine it makes more sense as a concept when you're publishing data to something like a public MQTT server, but nonetheless it is available.
-
-### Feedback
-
-_Feedback to the course management about the assignment._
-Cool and fun!
